@@ -4,3 +4,4 @@ tmp/*
 share/
 lib/
 lfwa/
+label.csv
