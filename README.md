@@ -14,6 +14,12 @@ To what end is this technology being used? We don't really know, do we?
 
 This machine does nothing more than recording what it detects, but it very well could. We've left that part out and leave it up to the viewer to imagine what actions a machine like this *could* take. 
 
+## Building
+
+Run `pip install -r requirements.txt`
+
+Download the lfwa database and unzip it into `lfwa`
+
 ## Running
 
 Run `script/extract-features`
