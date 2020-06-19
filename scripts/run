@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 
+import racemachine.model as model
 from racemachine.video_tracker import VideoTracker
 
 def main():
+  model.db.connect()
+  model.db.create_tables([model.Face])
   app = VideoTracker()
   app.run()
 

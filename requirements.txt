@@ -13,6 +13,7 @@ opencv-python
 sklearn
 tqdm
 h5py
-redis
 opencv-contrib-python
 rq
+peewee
+psycopg2

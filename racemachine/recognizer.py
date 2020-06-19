@@ -35,10 +35,9 @@ class Recognizer(object):
         self.model.write(outpath)
 
     def train(self, images, labels):
-        # Convert labels to 32bit integers. This is a workaround for 64bit machines.
         labels = np.asarray(labels)
 
-        logger.debug('Training model on {} images'.format(len(images)))
+        logger.info('Training model on {} images'.format(len(images)))
         self.model.train(np.asarray(images), labels)
         self.trained = True
 

@@ -66,6 +66,7 @@ class VideoTracker(object):
                 self.faces = [ f for f in self.faces if f.frame_count == self.frame_count ]
 
                 logger.info('frame_count: {}'.format(self.frame_count))
+                logger.info('face count: {}'.format(len(self.faces)))
 
                 self.__draw_faces(self.frame_out)
                 self.__show_frame_out()
