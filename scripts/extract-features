@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+from racemachine.feature_extractor import FeatureExtractor
+
+def main():
+    app = FeatureExtractor()
+    app.run()
+
+if __name__ == '__main__':
+    main()

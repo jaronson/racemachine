@@ -1,0 +1,12 @@
+{
+  "log": {
+      "level": "INFO"
+  },
+  "redis": {
+      "host": "127.0.0.1",
+      "port": 6379
+  },
+  "recognizer": {
+    "model_path": "tmp/recognizer.model"
+  }
+}
