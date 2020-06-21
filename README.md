@@ -20,10 +20,18 @@ Run `pip install -r requirements.txt`
 
 Download the lfwa database and unzip it into `lfwa`
 
+Download the color feret database and unzip it into `colorferet`
+
+Run `ruby scripts/feret_mutator.rb`
+
+Run `scripts/extract-features`
+
+Run `scripts/train`
+
 ## Running
 
-Run `script/extract-features`
+Run `scripts/run`
 
-Run `script/train`
- 
-Run `script/run`
+## Notes
+
+Based in part on https://github.com/wondonghyeon/face-classification
