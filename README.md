@@ -8,7 +8,7 @@ This machine tracks visitors to its exhibit, recording their race and sex. When 
 
 Intentionally or otherwise, algorithms that we use on a daily basis have been encoded carrying the biases of their creators. By 2020, technology has advanced to the point that we can programmatically detect sex, race, age, and, by combining factors, in all likelihood, class.
 
-To what end is this technology being used? We don't really know, do we?
+To what end is this technology being used?
 
 ## Building a Racist Machine
 
