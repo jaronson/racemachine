@@ -13,7 +13,7 @@
     "model_path": "training_data/detector.model.pkl"
   },
   "recognizer": {
-    "model_path": "training_data/recognizer.model",
+    "model_path": "training_data/recognizer.model.yaml",
     "asset_path": "colorferet_mutated",
     "face_training_limit": 500,
     "image_extension": "png",
