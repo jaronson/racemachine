@@ -16,9 +16,7 @@ from racemachine.model import Face as FaceModel
 
 logger = log.get_logger(__name__)
 recognizer = recognizer.singleton
-
-if config.get('recognizer.persist'):
-    recognizer.load()
+recognizer.load()
 
 COLS                 = ['Male', 'Asian', 'White', 'Black']
 RACES                = ['Asian', 'Black', 'White']
@@ -35,19 +33,14 @@ class Face(object):
         converted = utils.normalize_rect(frame, rect)
         face = None
 
-        if not recognizer.trained:
-            logger.info('recognizer is not trained')
-            face = Face(rect, frame_count)
-            recognizer.train([ converted ], [ face.id ])
-        else:
-            label, dist = recognizer.predict_from_image(converted)
-            logger.info('Face.find_or_create_face: {}, {}'.format(label, dist))
+        label, dist = recognizer.predict_from_image(converted)
+        logger.info('Face.find_or_create_face: {}, {}'.format(label, dist))
 
-            if dist <= RECOGNIZER_THRESHOLD:
-                return Face(rect, frame_count, id=label, state='matched')
-            else:
-                face = Face(rect, frame_count)
-                recognizer.update(converted, face.id)
+        if dist <= RECOGNIZER_THRESHOLD:
+            return Face(rect, frame_count, id=label, state='matched')
+        else:
+            face = Face(rect, frame_count)
+            recognizer.update(converted, face.id)
 
         return face
 

@@ -1,17 +1,15 @@
 import cv2
 import time
 import pickle
-import face_recognition
-import pandas
 import numpy as np
+import pandas as pd
 
 import racemachine.log as log
 import racemachine.utils as utils
 import racemachine.face as face
 import racemachine.config as config
 from racemachine.face import Face
-
-UPSCALE = 1
+from racemachine.detector import Detector
 
 logger = log.get_logger(__name__)
 
@@ -23,14 +21,11 @@ class VideoTracker(object):
         self.frame_count = 0
         self.faces       = []
         self.rects       = None
+        self.detector    = Detector()
+
+        self.detector.load()
 
     def run(self):
-        model_path = config.get('detector.model_path')
-
-        # load the model
-        with open(model_path, 'rb') as f:
-            clf, labels = pickle.load(f)
-
         self.__init_video()
 
         try:
@@ -39,11 +34,11 @@ class VideoTracker(object):
 
                 frame = self.frame_in.copy()
                 self.frame_count += 1
-                pred, rects = self.__predict_from_frame(frame, clf, labels)
+                pred, rects = self.detector.predict_from_frame(frame)
 
                 if rects:
-                    self.rects = pandas.DataFrame(rects, columns = ['top', 'right', 'bottom', 'left'])
-                    self.rects = pandas.concat([pred, self.rects], axis=1)
+                    self.rects = pd.DataFrame(rects, columns = ['top', 'right', 'bottom', 'left'])
+                    self.rects = pd.concat([pred, self.rects], axis=1)
 
                     for row in self.rects.iterrows():
                         # If there are no faces, populate the first
@@ -96,25 +91,6 @@ class VideoTracker(object):
         ret, frame_in = self.video.read()
         self.frame_in = frame_in
         self.frame_out = frame_in.copy()
-
-    def __extract_features(self, image):
-        """Exctract 128 dimensional features
-        """
-        locs = face_recognition.face_locations(image, number_of_times_to_upsample = UPSCALE)
-        if len(locs) == 0:
-            return None, None
-        face_encodings = face_recognition.face_encodings(image, known_face_locations=locs)
-        return face_encodings, locs
-
-    def __predict_from_frame(self, frame, clf, labels):
-        """Predict face attributes for all detected faces in one image
-        """
-        face_encodings, locs = self.__extract_features(frame)
-        if not face_encodings:
-            return None, None
-        pred = pandas.DataFrame(clf.predict_proba(face_encodings), columns = labels)
-        pred = pred.loc[:, face.COLS]
-        return pred, locs
 
     def __draw_faces(self, image):
         for face in self.faces:
