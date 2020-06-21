@@ -15,8 +15,8 @@ class FeatureExtractor(object):
         data_dir = './lfwa'
         img_dir = './lfwa'
         attr_path = os.path.join(data_dir, 'lfw_att_73.mat')
-        save_feature = 'feature.csv'
-        save_label = 'label.csv'
+        save_feature = config.get('detector.features_path')
+        save_label = config.get('detector.labels_path')
 
         # read data
         print("reading data from {}".format(attr_path))
