@@ -7,7 +7,16 @@
     "username": "josh.aronson",
     "password": ""
   },
+  "detector": {
+    "features_path": "training_data/detector.features.csv",
+    "labels_path": "training_data/detector.labels.csv",
+    "model_path": "training_data/detector.model.pkl"
+  },
   "recognizer": {
-    "model_path": "tmp/recognizer.model"
+    "model_path": "training_data/recognizer.model",
+    "asset_path": "colorferet_mutated",
+    "face_training_limit": 500,
+    "image_extension": "png",
+    "persist": false
   }
 }

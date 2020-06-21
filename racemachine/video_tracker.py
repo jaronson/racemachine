@@ -8,6 +8,7 @@ import numpy as np
 import racemachine.log as log
 import racemachine.utils as utils
 import racemachine.face as face
+import racemachine.config as config
 from racemachine.face import Face
 
 UPSCALE = 1
@@ -24,7 +25,7 @@ class VideoTracker(object):
         self.rects       = None
 
     def run(self):
-        model_path = 'face_model.pkl'
+        model_path = config.get('detector.model_path')
 
         # load the model
         with open(model_path, 'rb') as f:
@@ -65,8 +66,8 @@ class VideoTracker(object):
                 # Discard faces with no matching rect (not in frame)
                 self.faces = [ f for f in self.faces if f.frame_count == self.frame_count ]
 
-                logger.info('frame_count: {}'.format(self.frame_count))
-                logger.info('face count: {}'.format(len(self.faces)))
+                logger.debug('frame_count: {}'.format(self.frame_count))
+                logger.debug('face count: {}'.format(len(self.faces)))
 
                 self.__draw_faces(self.frame_out)
                 self.__show_frame_out()
@@ -77,7 +78,8 @@ class VideoTracker(object):
             raise e
 
         finally:
-            Face.save_recognizer()
+            if config.get('recognizer.persist'):
+                Face.save_recognizer()
             cv2.destroyAllWindows()
 
     def __match_by_image(self, face, row):

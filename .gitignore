@@ -4,4 +4,6 @@ tmp/*
 share/
 lib/
 lfwa/
-label.csv
+colorferet/
+colorferet_mutated/
+training_data/
