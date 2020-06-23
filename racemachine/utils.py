@@ -7,6 +7,7 @@ import msgpack_numpy
 msgpack_numpy.patch()
 
 import racemachine.color as color
+import racemachine.face as face
 
 def draw_msg(dest, x, y, msg):
     font = cv2.FONT_HERSHEY_PLAIN
@@ -71,7 +72,7 @@ def get_dist(arr_a, arr_b):
     return np.linalg.norm(np.asarray(arr_a) - np.asarray(arr_b))
 
 def normalize_rect(image, rect):
-    y1, x2, y2, x1 = rect[1][4:].astype(int)
+    y1, x2, y2, x1 = rect[1][len(face.COLS):].astype(int)
     image2 = image[y1:y2, x1:x2]
     normalized = safely_to_grayscale(image2.copy())
     normalized = equalize_halves(normalized)

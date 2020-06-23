@@ -18,10 +18,14 @@ logger = log.get_logger(__name__)
 recognizer = recognizer.singleton
 recognizer.load()
 
-COLS                 = ['Male', 'Asian', 'White', 'Black']
+
+SEXES                = ['Male']
 RACES                = ['Asian', 'Black', 'White']
+AGES                 = ['Baby', 'Child', 'Youth', 'Middle Aged', 'Senior']
+HAIR_COLORS          = ['Black Hair', 'Blond Hair', 'Brown Hair', 'Bald']
+COLS                 = SEXES + RACES + AGES + HAIR_COLORS
 MALE_THRESHOLD       = 0.62
-RECOGNIZER_THRESHOLD = 45.0
+RECOGNIZER_THRESHOLD = 60.0
 MAX_IMAGES_COLLECTED = 10
 
 class Face(object):
@@ -61,6 +65,8 @@ class Face(object):
         self.__assign_coordinates()
         self.__assign_sex()
         self.__assign_race()
+        self.__assign_age()
+        self.__assign_hair_color()
 
         self.model = FaceModel.get_or_create(recognizer_label=self.id)[0]
         self.model.race = self.race
@@ -85,7 +91,7 @@ class Face(object):
         self.frame_count = frame_count
 
     def __assign_coordinates(self):
-        self.y1, self.x2, self.y2, self.x1 = self.rect[1][4:].astype(int)
+        self.y1, self.x2, self.y2, self.x1 = self.rect[1][len(COLS):].astype(int)
 
     def __assign_race(self):
         index = np.argmax([
@@ -101,6 +107,28 @@ class Face(object):
             self.sex = 'Male'
         else:
             self.sex = 'Female'
+
+    def __assign_age(self):
+        index = np.argmax([
+            self.rect[1]['Baby'],
+            self.rect[1]['Child'],
+            self.rect[1]['Youth'],
+            self.rect[1]['Middle Aged'],
+            self.rect[1]['Senior']
+            ])
+
+        self.age = AGES[index]
+
+    def __assign_hair_color(self):
+        index = np.argmax([
+            self.rect[1]['Black Hair'],
+            self.rect[1]['Blond Hair'],
+            self.rect[1]['Brown Hair'],
+            self.rect[1]['Bald']
+            ])
+
+        self.hair_color = HAIR_COLORS[index]
+
 
     def __update_recognizer(self, image):
         if self.model.images_collected >= MAX_IMAGES_COLLECTED:

@@ -96,7 +96,8 @@ class VideoTracker(object):
         for face in self.faces:
             font        = cv2.FONT_HERSHEY_DUPLEX
             label       = "id: #{}".format(face.id)
-            attrs       = "{} {}".format(face.race, face.sex)
+            label2      = "{} {}".format(face.race, face.sex)
+            label3      = "{}, {}".format(face.age, face.hair_color)
             image_width = image.shape[1]
 
             if face.state == 'new':
@@ -106,7 +107,8 @@ class VideoTracker(object):
 
             utils.draw_rects(self.frame_out, [ face], color)
             utils.draw_msg(image, face.x1, face.y1, label)
-            utils.draw_msg(image, face.x1 + 6, face.y2 - 6, attrs)
+            utils.draw_msg(image, face.x1 + 5, face.y2 - 5, label2)
+            utils.draw_msg(image, face.x1 + 5, face.y2 + 5, label3)
 
     def __show_frame_out(self):
         cv2.imshow('img2', self.frame_out)
